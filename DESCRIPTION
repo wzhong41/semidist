@@ -1,0 +1,33 @@
+Package: semidist
+Type: Package
+Title: Measure Dependence Between Categorical and Continuous Variables
+Version: 0.0.0.9000
+Date: 2023-11-19
+Authors@R: c(
+    person("Wei", "Zhong", email = "wzhong@xmu.edu.cn", role = c("aut")),
+    person("Zhuoxi", "Li", email = "chainchei@gmail.com", role = c("aut", "cre", "cph")),
+    person("Wenwen", "Guo", email = "guowenwen114@163.com", role = c("aut")),
+    person("Hengjian", "Cui", email = "hjcui@bnu.edu.cn", role = c("aut")),
+    person("Runze", "Li", email = "ril4@psu.edu", role = c("aut")))
+Description: Semi-distance and mean-variance (MV) index are proposed to measure the dependence between a categorical random variable and a continuous variable.
+    Test of independence and feature screening for classification problems can be implemented via the two dependence measures.
+    For the details of the methods, see Zhong et al. (2023) <https://www.tandfonline.com/doi/full/10.1080/01621459.2023.2284988>;
+    Cui and Zhong (2019) <https://www.sciencedirect.com/science/article/abs/pii/S016794731930115X>;
+    Cui, Li and Zhong (2015) <https://www.tandfonline.com/doi/full/10.1080/01621459.2014.920256>.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: 
+    energy,
+    FNN,
+    furrr,
+    purrr,
+    Rcpp,
+    stats
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

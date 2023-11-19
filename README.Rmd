@@ -1,0 +1,63 @@
+---
+output: github_document
+---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# Semi-Distance Correlation and MV Index: Measure Dependence Between Categorical and Continuous Variables
+<!-- badges: start -->
+<!-- badges: end -->
+The goal of package `semidist` is to provide an easy way to implement the 
+semi-distance methods (Zhong et al., 2022+) and MV index methods 
+(Cui, Li and Zhong, 2015; Cui and Zhong, 2019).
+
+## Installation
+To install `semidist`, 
+``` r
+install.packages("semidist")
+```
+
+## Example
+Here is a simple example showing how to use `semidist` to measure the dependence
+between a categorical variable and a multivariate continuous variable, and apply
+the measure on testing the independence and conduct groupwise feature screening.
+
+```{r example}
+library(semidist)
+X <- mtcars[, c("mpg", "disp", "drat", "wt")]
+y <- factor(mtcars[, "am"])
+
+sdcov(X, y)
+sdcor(X, y)
+
+sd_test(X, y)
+
+sd_sis(X, y, d = 2)
+
+# Suppose we have prior information for the group structure as
+# ("mpg", "drat"), ("disp", "hp") and ("wt", "qsec")
+group_info <- list(
+  mpg_drat = c("mpg", "drat"),
+  disp_wt = c("disp", "wt")
+)
+sd_sis(X, y, group_info, d = 2)
+
+```
+
+
+## References
+1. Wei Zhong, Zhuoxi Li, Wenwen Guo and Hengjian Cui. (2022+) “Semi-Distance
+Correlation and Its Applications.” *Journal of the American Statistical Association.*
+Under review.
+1. Hengjian Cui and Wei Zhong (2019). “A Distribution-Free Test of Independence
+Based on Mean Variance Index.” *Computational Statistics & Data Analysis*, 139,
+117-133.
+1. Hengjian Cui, Runze Li and Wei Zhong (2015). “Model-Free Feature Screening
+for Ultrahigh Dimensional Discriminant Analysis.” *Journal of the American
+Statistical Association*, 110, 630-641.
