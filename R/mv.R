@@ -92,7 +92,6 @@ mv <- function(x, y, return_mat = FALSE) {
 
 # Critical value via asymptotic distribution of MV statistic
 mv_crit_asym <- function(R, N = 500, realizations = 10000) {
-  set.seed(1)
   x <- numeric(realizations)
   hm <- sum(1 / (1:N)^2) # compute the general harmonic number H_{500, 2}
   for (i in 1:realizations){
