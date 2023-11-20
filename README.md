@@ -4,11 +4,11 @@
 # Semi-Distance Correlation and MV Index: Measure Dependence Between Categorical and Continuous Variables
 
 <!-- badges: start -->
-<!-- badges: end -->
 
-The goal of package `semidist` is to provide an easy way to implement
-the semi-distance methods (Zhong et al., 2023) and MV index methods
-(Cui, Li and Zhong, 2015; Cui and Zhong, 2019).
+[![R-CMD-check](https://github.com/wzhong41/semidist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/wzhong41/semidist/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end --> The goal of package `semidist` is to provide an
+easy way to implement the semi-distance methods (Zhong et al., 2023) and
+MV index methods (Cui, Li and Zhong, 2015; Cui and Zhong, 2019).
 
 ## Installation
 
@@ -40,7 +40,7 @@ sd_test(X, y)
 #>  Semi-Distance Independence Test (Permutation Test with K = 10000)
 #> 
 #> Data: X and y,   Sample size = 32
-#> Test statistic = 940.344,    p-value = 0.0008999
+#> Test statistic = 940.344,    p-value = 0.0005999
 #> Alternative hypothesis: Two random variables are not independent
 
 sd_sis(X, y, d = 2)
