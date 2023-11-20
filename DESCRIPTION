@@ -1,7 +1,7 @@
 Package: semidist
 Type: Package
 Title: Measure Dependence Between Categorical and Continuous Variables
-Version: 0.0.0.9000
+Version: 0.1.0
 Date: 2023-11-19
 Authors@R: c(
     person("Wei", "Zhong", email = "wzhong@xmu.edu.cn", role = c("aut")),
