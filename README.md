@@ -7,7 +7,7 @@
 <!-- badges: end -->
 
 The goal of package `semidist` is to provide an easy way to implement
-the semi-distance methods (Zhong et al., 2022+) and MV index methods
+the semi-distance methods (Zhong et al., 2023) and MV index methods
 (Cui, Li and Zhong, 2015; Cui and Zhong, 2019).
 
 ## Installation
@@ -36,29 +36,12 @@ sdcor(X, y)
 #> [1] 0.3489821
 
 sd_test(X, y)
-#> $method
-#> [1] "Semi-Distance Independence Test (Permutation Test with K = 10000)"
 #> 
-#> $name_data
-#> [1] "X and y"
+#>  Semi-Distance Independence Test (Permutation Test with K = 10000)
 #> 
-#> $n
-#> [1] 32
-#> 
-#> $test_type
-#> [1] "perm"
-#> 
-#> $stat
-#> [1] 940.344
-#> 
-#> $pvalue
-#> [1] 0.0009999
-#> 
-#> $num_perm
-#> [1] 10000
-#> 
-#> attr(,"class")
-#> [1] "indtest"
+#> Data: X and y,   Sample size = 32
+#> Test statistic = 940.344,    p-value = 0.0008999
+#> Alternative hypothesis: Two random variables are not independent
 
 sd_sis(X, y, d = 2)
 #> $group_info
@@ -113,9 +96,9 @@ sd_sis(X, y, group_info, d = 2)
 
 ## References
 
-1.  Wei Zhong, Zhuoxi Li, Wenwen Guo and Hengjian Cui. (2022+)
+1.  Wei Zhong, Zhuoxi Li, Wenwen Guo and Hengjian Cui. (2023)
     “Semi-Distance Correlation and Its Applications.” *Journal of the
-    American Statistical Association.* Under review.
+    American Statistical Association.*
 2.  Hengjian Cui and Wei Zhong (2019). “A Distribution-Free Test of
     Independence Based on Mean Variance Index.” *Computational
     Statistics & Data Analysis*, 139, 117-133.

@@ -90,14 +90,36 @@ mv <- function(x, y, return_mat = FALSE) {
 }
 
 
-#' MV independence test (via Permutation Test)
+# Critical value via asymptotic distribution of MV statistic
+mv_crit_asym <- function(R, N = 500, realizations = 10000) {
+  set.seed(1)
+  x <- numeric(realizations)
+  hm <- sum(1 / (1:N)^2) # compute the general harmonic number H_{500, 2}
+  for (i in 1:realizations){
+    xi <- 0
+    for (j in 1:N){
+      xi <- xi + rchisq(1, R-1) / j^2
+    }
+      x[i] <- xi / pi^2 + (R-1) * (1/6 - hm / pi^2)  # (R-1)*(1/6-hm/pi^2) is the correction error
+  }
+  quantile(x, probs = c(0.9, 0.95, 0.99))
+}
+
+
+#' MV independence test
 #'
-#' @description Implement the MV independence test via permutation test.
+#' @description Implement the MV independence test via permutation test, or via 
+#' the asymptotic approximation
 #'
 #' @param x Data of univariate continuous variables, which should be a vector of
 #'   length \eqn{n}.
 #' @param y Data of categorical variables, which should be a factor of length
 #'   \eqn{n}.
+#' @param test_type Type of the test:
+#'   * `"perm"` (the default): Implement the test via permutation test;
+#'   * `"asym"`: Implement the test via the asymptotic approximation.
+#'   
+#'   See the Reference for details.
 #' @param num_perm The number of replications in permutation test.
 #'
 #' @returns A list with class `"indtest"` containing the following components
@@ -106,13 +128,15 @@ mv <- function(x, y, return_mat = FALSE) {
 #' * `n`: sample size of the data;
 #' * `num_perm`: number of replications in permutation test;
 #' * `stat`: test statistic;
-#' * `pvalue`: computed p-value.
+#' * `pvalue`: computed p-value. (Notice: asymptotic test cannot return a p-value, but only the critical values `crit_vals` for 90%, 95% and 99% confidence levels.)
 #'
 #' @examples
 #' x <- mtcars[, "mpg"]
 #' y <- factor(mtcars[, "am"])
 #' test <- mv_test(x, y)
 #' print(test)
+#' test_asym <- mv_test(x, y, test_type = "asym")
+#' print(test_asym)
 #'
 #' # Man-made independent data -------------------------------------------------
 #' n <- 30; R <- 5; prob <- rep(1/R, R)
@@ -120,6 +144,8 @@ mv <- function(x, y, return_mat = FALSE) {
 #' y <- factor(sample(1:R, size = n, replace = TRUE, prob = prob), levels = 1:R)
 #' test <- mv_test(x, y)
 #' print(test)
+#' test_asym <- mv_test(x, y, test_type = "asym")
+#' print(test_asym)
 #'
 #' # Man-made functionally dependent data --------------------------------------
 #' n <- 30; R <- 3
@@ -128,13 +154,16 @@ mv <- function(x, y, return_mat = FALSE) {
 #' y <- factor(rep(1:3, each = 10))
 #' test <- mv_test(x, y)
 #' print(test)
+#' test_asym <- mv_test(x, y, test_type = "asym")
+#' print(test_asym)
 #'
 #' @export
-mv_test <- function(x, y, num_perm = 10000) {
+mv_test <- function(x, y, test_type = "perm", num_perm = 10000) {
   mv_obj <- mv(x, y, return_mat = TRUE)
   
   n <- length(y)
   Y <- switch_cat_repr(y)
+  R <- ncol(Y)
   n_all <- colSums(Y)
   name_data <- paste(
     deparse(substitute(x)), "and", deparse(substitute(y))
@@ -144,30 +173,55 @@ mv_test <- function(x, y, num_perm = 10000) {
   mat_x <- mv_obj$mat_x
   F_0 <- colMeans(mat_x)
   
-  name_method <- paste0(
-    "MV Independence Test (Permutation Test with K = ",
-    num_perm, ")"
-  )
-  num_rej <- 0
-  for (perm in 1:num_perm) {
-    F_all <- crossprod(mat_x, Y[sample(1:n), ]) %*% diag(1 / n_all)
-    
-    mv_perm <- sum((F_all - F_0)^2 %*% diag(n_all/n)) / n
-    
-    if (mv_perm >= mv_n) {
-      num_rej <- num_rej + 1
+  if (test_type == "perm") {
+    name_method <- paste0(
+      "MV Independence Test (Permutation Test with K = ",
+      num_perm, ")"
+    )
+    num_rej <- 0
+    for (perm in 1:num_perm) {
+      F_all <- crossprod(mat_x, Y[sample(1:n), ]) %*% diag(1 / n_all)
+      
+      mv_perm <- sum((F_all - F_0)^2 %*% diag(n_all/n)) / n
+      
+      if (mv_perm >= mv_n) {
+        num_rej <- num_rej + 1
+      }
+    }
+    pvalue <- (num_rej + 1) / (num_perm + 1)
+  } else if (test_type == "asym") {
+    name_method <- paste0(
+      "MV Independence Test (Asymptotic Test)"
+    )
+    crit_mat <- matrix( # Taken from the Table 2 in Cui and Zhong (2019)
+      c(
+        0.3469, 0.6086, 0.8384, 1.0602, 1.2698, 1.4927, 1.6780, 1.8963, 2.1019,
+        0.4665, 0.7365, 0.9938, 1.2399, 1.4440, 1.6986, 1.8901, 2.1096, 2.3362,
+        0.7120, 1.0673, 1.3393, 1.6026, 1.8650, 2.1241, 2.3645, 2.6180, 2.7943
+      ),
+      nrow = 9, ncol = 3,
+      dimnames = list(2:10, c("90%", "95%", "99%"))
+    )
+    if (R %in% 2:10) {
+      crit_vals <- crit_mat[as.character(R), ]
+    } else {
+      crit_vals <- round(mv_crit_asym(R), 4)
     }
   }
-  pvalue <- (num_rej + 1) / (num_perm + 1)
+  
   
   indtest <- list(
     method = name_method,
     name_data = name_data,
     n = n,
-    num_perm = num_perm,
-    stat = n * mv_n,
-    pvalue = pvalue
+    stat = n * mv_n
   )
+  if (test_type == "perm") {
+    indtest$num_perm <- num_perm
+    indtest$pvalue <- pvalue
+  } else if (test_type == "asym") {
+    indtest$crit_vals <- crit_vals
+  }
   class(indtest) <- "indtest"
   
   indtest

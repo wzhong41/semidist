@@ -8,6 +8,8 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stats dist
 #' @importFrom stats pnorm
+#' @importFrom stats quantile
+#' @importFrom stats rchisq
 #' @importFrom stats rgamma
 #' @importFrom stats rnorm
 #' @useDynLib semidist, .registration = TRUE

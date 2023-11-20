@@ -38,6 +38,52 @@ switch_cat_repr <- function(obj) {
   }
 }
 
+
+#' Print Method for Independence Tests Between Categorical and Continuous Variables
+#' 
+#' @description
+#' Printing object of class `"indtest"`, by simple [print] method.
+#' 
+#' @param x `"indtest"` class object.
+#' @param digits minimal number of *significant* digits.
+#' @param ... further arguments passed to or from other methods.
+#' 
+#' @examples
+#' # Man-made functionally dependent data --------------------------------------
+#' n <- 30; R <- 3
+#' x <- rep(0, n)
+#' x[1:10] <- 0.3; x[11:20] <- 0.2; x[21:30] <- -0.1
+#' y <- factor(rep(1:3, each = 10))
+#' test <- mv_test(x, y)
+#' print(test)
+#' test_asym <- mv_test(x, y, test_type = "asym")
+#' print(test_asym)
+#' 
+#' @returns None
+#' @export
+print.indtest <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap(x$method, prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("Data: ", x$name_data, ",\t", "Sample size = ", x$n, "\n", sep = "")
+  if (x$method == "MV Independence Test (Asymptotic Test)") {
+    crit_vals <- x$crit_vals
+    cat("Test statistic = ", x$stat, "\n")
+    cat("Asymptotic critical value: \t")
+    for (i in 1:length(crit_vals)) {
+      cat(names(crit_vals)[i], " -- ", crit_vals[i], "\t", sep = "")
+    }
+    cat("\n")
+  } else {
+    fp <- format.pval(x$pvalue, digits = max(1L, digits - 3L))
+    out_pvalue <- paste("p-value", if(substr(fp, 1L, 1L) == "<") fp else paste("=", fp))
+    cat("Test statistic = ", x$stat, ",\t", out_pvalue, "\n", sep = "")
+  }
+  cat("Alternative hypothesis: Two random variables are not independent", sep = "")
+
+  invisible(x)
+}
+
 # Estimate the trace of the covariance matrix and its square (R implementation for verified)
 tr_estimate_R_impl <- function(X) {
   n <- nrow(X)

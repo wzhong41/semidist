@@ -12,9 +12,10 @@ knitr::opts_chunk$set(
 ```
 # Semi-Distance Correlation and MV Index: Measure Dependence Between Categorical and Continuous Variables
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/wzhong41/semidist/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/wzhong41/semidist/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 The goal of package `semidist` is to provide an easy way to implement the 
-semi-distance methods (Zhong et al., 2022+) and MV index methods 
+semi-distance methods (Zhong et al., 2023) and MV index methods 
 (Cui, Li and Zhong, 2015; Cui and Zhong, 2019).
 
 ## Installation
@@ -52,9 +53,7 @@ sd_sis(X, y, group_info, d = 2)
 
 
 ## References
-1. Wei Zhong, Zhuoxi Li, Wenwen Guo and Hengjian Cui. (2022+) “Semi-Distance
-Correlation and Its Applications.” *Journal of the American Statistical Association.*
-Under review.
+1. Wei Zhong, Zhuoxi Li, Wenwen Guo and Hengjian Cui. (2023) “Semi-Distance Correlation and Its Applications.” *Journal of the American Statistical Association.*
 1. Hengjian Cui and Wei Zhong (2019). “A Distribution-Free Test of Independence
 Based on Mean Variance Index.” *Computational Statistics & Data Analysis*, 139,
 117-133.

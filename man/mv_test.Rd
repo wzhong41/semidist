@@ -2,9 +2,9 @@
 % Please edit documentation in R/mv.R
 \name{mv_test}
 \alias{mv_test}
-\title{MV independence test (via Permutation Test)}
+\title{MV independence test}
 \usage{
-mv_test(x, y, num_perm = 10000)
+mv_test(x, y, test_type = "perm", num_perm = 10000)
 }
 \arguments{
 \item{x}{Data of univariate continuous variables, which should be a vector of
@@ -12,6 +12,14 @@ length \eqn{n}.}
 
 \item{y}{Data of categorical variables, which should be a factor of length
 \eqn{n}.}
+
+\item{test_type}{Type of the test:
+\itemize{
+\item \code{"perm"} (the default): Implement the test via permutation test;
+\item \code{"asym"}: Implement the test via the asymptotic approximation.
+}
+
+See the Reference for details.}
 
 \item{num_perm}{The number of replications in permutation test.}
 }
@@ -23,17 +31,20 @@ A list with class \code{"indtest"} containing the following components
 \item \code{n}: sample size of the data;
 \item \code{num_perm}: number of replications in permutation test;
 \item \code{stat}: test statistic;
-\item \code{pvalue}: computed p-value.
+\item \code{pvalue}: computed p-value. (Notice: asymptotic test cannot return a p-value, but only the critical values \code{crit_vals} for 90\%, 95\% and 99\% confidence levels.)
 }
 }
 \description{
-Implement the MV independence test via permutation test.
+Implement the MV independence test via permutation test, or via
+the asymptotic approximation
 }
 \examples{
 x <- mtcars[, "mpg"]
 y <- factor(mtcars[, "am"])
 test <- mv_test(x, y)
 print(test)
+test_asym <- mv_test(x, y, test_type = "asym")
+print(test_asym)
 
 # Man-made independent data -------------------------------------------------
 n <- 30; R <- 5; prob <- rep(1/R, R)
@@ -41,6 +52,8 @@ x <- rnorm(n)
 y <- factor(sample(1:R, size = n, replace = TRUE, prob = prob), levels = 1:R)
 test <- mv_test(x, y)
 print(test)
+test_asym <- mv_test(x, y, test_type = "asym")
+print(test_asym)
 
 # Man-made functionally dependent data --------------------------------------
 n <- 30; R <- 3
@@ -49,5 +62,7 @@ x[1:10] <- 0.3; x[11:20] <- 0.2; x[21:30] <- -0.1
 y <- factor(rep(1:3, each = 10))
 test <- mv_test(x, y)
 print(test)
+test_asym <- mv_test(x, y, test_type = "asym")
+print(test_asym)
 
 }

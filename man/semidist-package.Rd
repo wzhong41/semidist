@@ -6,7 +6,15 @@
 \alias{semidist-package}
 \title{semidist: Measure Dependence Between Categorical and Continuous Variables}
 \description{
-Semi-distance and mean-variance (MV) index are proposed to measure the dependence between a categorical random variable and a continuous variable. Test of independence and feature screening for classification problems can be implemented via the two dependence measures. For the details of the methods, see Zhong et al. (2023) \url{https://www.tandfonline.com/doi/full/10.1080/01621459.2023.2284988}; Cui and Zhong (2019) \url{https://www.sciencedirect.com/science/article/abs/pii/S016794731930115X}; Cui, Li and Zhong (2015) \url{https://www.tandfonline.com/doi/full/10.1080/01621459.2014.920256}.
+Semi-distance and mean-variance (MV) index are proposed to measure the dependence between a categorical random variable and a continuous variable. Test of independence and feature screening for classification problems can be implemented via the two dependence measures. For the details of the methods, see Zhong et al. (2023) \doi{10.1080/01621459.2023.2284988}; Cui and Zhong (2019) \doi{10.1016/j.csda.2019.05.004}; Cui, Li and Zhong (2015) \doi{10.1080/01621459.2014.920256}.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/wzhong41/semidist}
+  \item Report bugs at \url{https://github.com/wzhong41/semidist/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Zhuoxi Li \email{chainchei@gmail.com} [copyright holder]
